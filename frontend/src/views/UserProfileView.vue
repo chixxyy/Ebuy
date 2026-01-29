@@ -26,10 +26,13 @@ const isCurrentUser = computed(() => {
     return authStore.user && user.value && authStore.user.id == user.value.id
 })
 
-const fetchUserProfile = async () => {
+import { onBeforeRouteUpdate } from 'vue-router'
+
+const fetchUserProfile = async (userId) => {
     loading.value = true
+    const id = userId || route.params.id
     try {
-        const response = await fetch(`http://localhost:3000/api/users/${route.params.id}`)
+        const response = await fetch(`http://localhost:3000/api/users/${id}`)
         if (response.ok) {
             user.value = await response.json()
         }
@@ -69,15 +72,21 @@ const saveProfile = async () => {
             authStore.user = { ...authStore.user, ...updatedUser } // Update auth store
             localStorage.setItem('user', JSON.stringify(authStore.user))
             isEditing.value = false
-            showToast(alert.update_success)
+            showToast(alert.update_success.value)
         } else {
-            showAlert(alert.error, alert.error, 'error', alert.confirm)
+            showAlert(alert.error.value, alert.error.value, 'error', alert.confirm.value)
         }
     } catch (e) {
         console.error(e)
-        showAlert(alert.error, alert.error, 'error', alert.confirm)
+        showAlert(alert.error.value, alert.error.value, 'error', alert.confirm.value)
     }
 }
+
+onBeforeRouteUpdate(async (to, from) => {
+    if (to.params.id !== from.params.id) {
+        await fetchUserProfile(to.params.id)
+    }
+})
 
 onMounted(() => {
     fetchUserProfile()

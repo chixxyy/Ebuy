@@ -139,7 +139,7 @@ onMounted(() => {
                         </div>
                         <div>
                             <div class="font-bold text-lg text-gray-900 mb-1">
-                                <router-link :to="`/user/${product.seller.id}`" class="hover:text-indigo-600">
+                                <router-link :to="{ name: 'user-profile', params: { id: product.seller.id } }" class="hover:text-indigo-600">
                                     {{ product.seller.name }}
                                 </router-link>
                             </div>

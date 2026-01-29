@@ -79,7 +79,7 @@ const logout = () => {
                   <span class="hidden lg:inline">{{ nav.add_product }}</span>
                </router-link>
 
-               <router-link :to="`/user/${authStore.user.id}`" class="flex items-center gap-2 text-sm font-medium text-gray-700 px-3 py-1.5 rounded-full bg-gray-100/50 hover:bg-gray-100 transition-colors">
+               <router-link :to="{ name: 'user-profile', params: { id: authStore.user.id } }" class="flex items-center gap-2 text-sm font-medium text-gray-700 px-3 py-1.5 rounded-full bg-gray-100/50 hover:bg-gray-100 transition-colors">
                   <User class="w-4 h-4 text-indigo-600" />
                   {{ authStore.user.name }}
                </router-link>
@@ -133,7 +133,7 @@ const logout = () => {
                 <router-link to="/add-product" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 bg-gray-50/50" @click="isMobileMenuOpen = false">
                      {{ nav.add_product }}
                 </router-link>
-                <router-link :to="`/user/${authStore.user.id}`" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" @click="isMobileMenuOpen = false">
+                <router-link :to="{ name: 'user-profile', params: { id: authStore.user.id } }" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" @click="isMobileMenuOpen = false">
                     {{ authStore.user.name }}
                 </router-link>
                 <button @click="() => { logout(); isMobileMenuOpen = false }" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-red-500 hover:bg-red-50">

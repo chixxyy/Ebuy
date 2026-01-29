@@ -96,7 +96,7 @@ const canModifyProduct = computed(() => {
     <div class="p-5 flex flex-col flex-grow">
       <div class="flex justify-between items-center mb-1">
           <div class="text-xs font-medium text-indigo-500 uppercase tracking-wider">{{ displayCategory }}</div>
-          <router-link v-if="product.seller" :to="`/user/${product.seller.id}`" class="text-xs text-gray-400 hover:text-indigo-600 truncate max-w-[50%]">
+          <router-link v-if="product.seller" :to="{ name: 'user-profile', params: { id: product.seller.id } }" class="text-xs text-gray-400 hover:text-indigo-600 truncate max-w-[50%]">
               {{ products.by }} {{ product.seller.name }}
           </router-link>
       </div>
