@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '../stores/products'
+import { showAlert, showToast } from '../utils/swal'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const productStore = useProductStore()
+const { t } = useI18n()
 
 const form = ref({
   name: '',
@@ -22,9 +25,10 @@ const handleSubmit = async () => {
 
     const success = await productStore.addProduct(form.value)
     if (success) {
+        showToast(t('alert.create_success'))
         router.push('/products')
     } else {
-        alert('Failed to add product')
+        showAlert(t('alert.error'), t('add_product.error') || 'Failed to add product', 'error', t('alert.confirm'))
     }
 }
 </script>

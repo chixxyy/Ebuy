@@ -8,7 +8,7 @@
     "add_product": "新增商品"
   },
   "home": {
-    "new_collection": "2024 全新系列",
+    "new_collection": "2026 全新系列",
     "hero_title": "提升您的",
     "hero_subtitle": "日常質感生活",
     "hero_desc": "探索我們精選的優質商品，為您的日常生活增添美感與質感。品質與美學的完美結合。",
@@ -96,6 +96,24 @@
     "no_products": "尚未上架任何商品。",
     "user_not_found": "找不到該使用者",
     "return_home": "返回首頁"
+  },
+  "alert": {
+    "success": "成功",
+    "error": "錯誤",
+    "warning": "警告",
+    "info": "通知",
+    "confirm": "確定",
+    "cancel": "取消",
+    "yes": "是",
+    "no": "否",
+    "delete_confirm": "確定要刪除嗎？",
+    "delete_success": "刪除成功",
+    "update_success": "更新成功",
+    "create_success": "新增成功",
+    "login_success": "登入成功",
+    "register_success": "註冊成功",
+    "login_failed": "登入失敗",
+    "register_failed": "註冊失敗"
   },
   "items": {
     "1": {

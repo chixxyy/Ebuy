@@ -11,6 +11,7 @@ const cartStore = useCartStore()
 const router = useRouter()
 const { locale } = useI18n()
 const isScrolled = ref(false)
+const isMobileMenuOpen = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20
@@ -101,16 +102,50 @@ const logout = () => {
         
          <!-- Mobile menu button -->
         <div class="flex items-center gap-4 md:hidden">
-          <button 
+            <router-link to="/cart" class="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors">
+              <ShoppingCart class="w-6 h-6" />
+              <span v-if="cartStore.totalItems > 0" class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold ring-2 ring-white">{{ cartStore.totalItems }}</span>
+            </router-link>
+           <button 
                 @click="toggleLanguage" 
                 class="p-2 text-gray-600 hover:text-indigo-600 transition-colors"
               >
             <Globe class="h-6 w-6" />
           </button>
-          <button class="p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100">
-            <Menu class="h-6 w-6" />
+          <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 rounded-md text-gray-600 hover:text-indigo-600 hover:bg-gray-100">
+            <Menu v-if="!isMobileMenuOpen" class="h-6 w-6" />
+            <span v-else class="h-6 w-6 flex items-center justify-center text-xl font-bold">✕</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div v-if="isMobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full left-0">
+        <div class="px-4 py-2 space-y-1">
+            <router-link to="/products" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" @click="isMobileMenuOpen = false">
+                {{ $t('nav.products') }}
+            </router-link>
+            
+            <template v-if="authStore.user">
+                <router-link to="/add-product" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 bg-gray-50/50" @click="isMobileMenuOpen = false">
+                     {{ $t('nav.add_product') }}
+                </router-link>
+                <router-link :to="`/user/${authStore.user.id}`" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" @click="isMobileMenuOpen = false">
+                    {{ authStore.user.name }}
+                </router-link>
+                <button @click="() => { logout(); isMobileMenuOpen = false }" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-red-500 hover:bg-red-50">
+                    Logout
+                </button>
+            </template>
+            <template v-else>
+                <router-link to="/login" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" @click="isMobileMenuOpen = false">
+                    {{ $t('nav.login') }}
+                </router-link>
+                <router-link to="/register" class="block px-3 py-2 rounded-md text-base font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50" @click="isMobileMenuOpen = false">
+                    {{ $t('nav.signup') }}
+                </router-link>
+            </template>
       </div>
     </div>
   </nav>

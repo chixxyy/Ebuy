@@ -19,7 +19,7 @@ import NavBar from './components/NavBar.vue'
            <span class="font-bold text-gray-900">E-Buy</span>
         </div>
         <div class="text-sm text-gray-500">
-          &copy; 2024 E-Buy. All rights reserved.
+          &copy; 2026 E-Buy. All rights reserved.
         </div>
       </div>
     </footer>

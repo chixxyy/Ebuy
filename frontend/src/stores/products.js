@@ -90,7 +90,6 @@ export const useProductStore = defineStore('products', () => {
         body: JSON.stringify({ content })
       })
       if (!response.ok) throw new Error('Failed to add comment')
-      console.log('Comment added')
       return true
     } catch (e) {
       error.value = e.message
@@ -110,7 +109,6 @@ export const useProductStore = defineStore('products', () => {
         body: JSON.stringify({ content })
       })
       if (!response.ok) throw new Error('Failed to update comment')
-      console.log('Comment updated')
       return true
     } catch (e) {
       error.value = e.message
@@ -128,7 +126,6 @@ export const useProductStore = defineStore('products', () => {
         }
       })
       if (!response.ok) throw new Error('Failed to delete comment')
-      console.log('Comment deleted')
       return true
     } catch (e) {
       error.value = e.message

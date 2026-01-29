@@ -5,11 +5,14 @@ import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
 import { useProductStore } from '../stores/products'
 import { ShoppingCart, Star, MessageSquare, Send, User, Edit2, Trash2 } from 'lucide-vue-next'
+import { showConfirm, showToast } from '../utils/swal'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
 const productStore = useProductStore()
+const { t } = useI18n()
 
 const product = ref(null)
 const loading = ref(true)
@@ -68,8 +71,16 @@ const saveComment = async (commentId) => {
 }
 
 const deleteComment = async (commentId) => {
-    if (confirm('Are you sure you want to delete this comment?')) {
+    const result = await showConfirm(
+        t('alert.warning'),
+        t('alert.delete_confirm'),
+        t('alert.yes'),
+        t('alert.no')
+    )
+
+    if (result.isConfirmed) {
         if (await productStore.deleteComment(commentId)) {
+            showToast(t('alert.delete_success'))
             await fetchProduct()
         }
     }

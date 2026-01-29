@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useProductStore } from '../stores/products'
 import { useI18n } from 'vue-i18n'
+import { showAlert, showToast } from '../utils/swal'
 
 const router = useRouter()
 const route = useRoute()
@@ -29,7 +30,7 @@ onMounted(async () => {
     if (product) {
         form.value = { ...product }
     } else {
-        alert('Product not found')
+        await showAlert(t('alert.error'), t('alert.error') || 'Product not found', 'error', t('alert.confirm'))
         router.push('/products')
     }
 })
@@ -40,9 +41,10 @@ const handleSubmit = async () => {
 
     const success = await productStore.updateProduct(parseInt(route.params.id), form.value)
     if (success) {
+        showToast(t('alert.update_success'))
         router.push('/products')
     } else {
-        alert('Failed to update product')
+        showAlert(t('alert.error'), t('alert.error') || 'Failed to update product', 'error', t('alert.confirm'))
     }
 }
 </script>

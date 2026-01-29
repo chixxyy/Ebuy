@@ -2,18 +2,22 @@
 import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useRouter } from 'vue-router'
+import { showAlert, showToast } from '../utils/swal'
+import { useI18n } from 'vue-i18n'
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
+const { t } = useI18n()
 
 const handleRegister = async () => {
   if (await authStore.register(username.value, password.value, email.value)) {
+    showToast(t('alert.register_success'))
     router.push('/login')
   } else {
-    alert('Registration failed')
+    showAlert(t('alert.error'), t('alert.register_failed'), 'error', t('alert.confirm'))
   }
 }
 </script>

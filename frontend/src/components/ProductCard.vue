@@ -5,6 +5,7 @@ import { useProductStore } from '../stores/products'
 import { ShoppingCart, Pencil, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import { showConfirm, showToast } from '../utils/swal'
 
 const props = defineProps({
   product: {
@@ -23,8 +24,16 @@ const addToCart = () => {
 }
 
 const handleDelete = async () => {
-    if (confirm(t('products.confirm_delete'))) {
+    const result = await showConfirm(
+        t('alert.warning'),
+        t('alert.delete_confirm'),
+        t('alert.yes'),
+        t('alert.no')
+    )
+
+    if (result.isConfirmed) {
         await productStore.deleteProduct(props.product.id)
+        showToast(t('alert.delete_success'))
     }
 }
 
@@ -42,6 +51,12 @@ const displayCategory = computed(() => {
   const key = `items.${props.product.id}.category`
   return te(key) ? t(key) : props.product.category
 })
+
+const canModifyProduct = computed(() => {
+    return authStore.user && props.product.seller && authStore.user.id === props.product.seller.id
+})
+
+
 </script>
 
 <template>
@@ -64,7 +79,7 @@ const displayCategory = computed(() => {
         </button>
       </div>
       <!-- Edit/Delete Actions (Only for logged in users) -->
-      <div v-if="authStore.user" class="absolute top-3 right-3 flex gap-2">
+      <div v-if="canModifyProduct" class="absolute top-3 right-3 flex gap-2">
          <button @click.stop="$router.push(`/edit-product/${product.id}`)" class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-indigo-600 hover:bg-white transition-all" title="Edit">
            <Pencil class="w-4 h-4" />
          </button>

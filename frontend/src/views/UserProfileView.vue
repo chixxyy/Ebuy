@@ -5,6 +5,8 @@ import { useAuthStore } from '../stores/auth'
 import { useProductStore } from '../stores/products'
 import ProductCard from '../components/ProductCard.vue'
 import { User, Calendar, Edit2, Save, X } from 'lucide-vue-next'
+import { showAlert, showToast } from '../utils/swal'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const authStore = useAuthStore()
@@ -13,6 +15,7 @@ const productStore = useProductStore()
 const user = ref(null)
 const loading = ref(true)
 const isEditing = ref(false)
+const { t } = useI18n()
 const editForm = ref({
     bio: '',
     name: ''
@@ -65,12 +68,13 @@ const saveProfile = async () => {
             authStore.user = { ...authStore.user, ...updatedUser } // Update auth store
             localStorage.setItem('user', JSON.stringify(authStore.user))
             isEditing.value = false
+            showToast(t('alert.update_success'))
         } else {
-            alert('Failed to update profile')
+            showAlert(t('alert.error'), t('alert.error'), 'error', t('alert.confirm'))
         }
     } catch (e) {
         console.error(e)
-        alert('Error updating profile')
+        showAlert(t('alert.error'), t('alert.error'), 'error', t('alert.confirm'))
     }
 }
 
