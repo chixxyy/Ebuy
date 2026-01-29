@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
 import userRoutes from './routes/user.routes';
 import commentRoutes from './routes/comment.routes';
+import uploadRoutes from './routes/upload.routes';
 
 dotenv.config();
 
@@ -18,6 +19,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// Serve static files from uploads directory
+import path from 'path';
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/', (req, res) => {
   res.send('Backend is running');
