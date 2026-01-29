@@ -80,10 +80,10 @@ const canModifyProduct = computed(() => {
       </div>
       <!-- Edit/Delete Actions (Only for logged in users) -->
       <div v-if="canModifyProduct" class="absolute top-3 right-3 flex gap-2">
-         <button @click.stop="$router.push(`/edit-product/${product.id}`)" class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-indigo-600 hover:bg-white transition-all" title="Edit">
+         <button @click.stop="$router.push(`/edit-product/${product.id}`)" class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-indigo-600 hover:bg-white transition-all" :title="$t('products.edit')">
            <Pencil class="w-4 h-4" />
          </button>
-         <button @click.stop="handleDelete" class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-red-600 hover:bg-white transition-all" title="Delete">
+         <button @click.stop="handleDelete" class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-red-600 hover:bg-white transition-all" :title="$t('products.delete')">
            <Trash2 class="w-4 h-4" />
          </button>
       </div>
@@ -98,7 +98,7 @@ const canModifyProduct = computed(() => {
       <div class="flex justify-between items-center mb-1">
           <div class="text-xs font-medium text-indigo-500 uppercase tracking-wider">{{ displayCategory }}</div>
           <router-link v-if="product.seller" :to="`/user/${product.seller.id}`" class="text-xs text-gray-400 hover:text-indigo-600 truncate max-w-[50%]">
-              by {{ product.seller.name }}
+              {{ $t('products.by') }} {{ product.seller.name }}
           </router-link>
       </div>
       <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">

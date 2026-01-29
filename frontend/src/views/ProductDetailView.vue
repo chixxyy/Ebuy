@@ -116,7 +116,7 @@ onMounted(() => {
                     <div class="flex items-center gap-2 mb-6">
                         <Star class="w-5 h-5 text-yellow-400 fill-current" />
                         <span class="font-bold text-gray-900">{{ product.rating }}</span>
-                        <span class="text-gray-500">({{ product.reviews }} reviews)</span>
+                        <span class="text-gray-500">({{ $t('products.reviews_count', { count: product.reviews }) }})</span>
                     </div>
 
                     <p class="text-gray-600 text-lg leading-relaxed mb-8">{{ product.description }}</p>
@@ -125,7 +125,7 @@ onMounted(() => {
                         <span class="text-3xl font-bold text-gray-900">${{ product.price }}</span>
                         <button @click="addToCart" class="px-8 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all flex items-center gap-2">
                             <ShoppingCart class="w-5 h-5" />
-                            Add to Cart
+                            {{ $t('products.add_to_cart') }}
                         </button>
                     </div>
                 </div>

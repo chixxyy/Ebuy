@@ -61,7 +61,9 @@
     "save": "Save",
     "cancel": "Cancel",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "by": "by",
+    "reviews_count": "{count} reviews"
   },
   "auth": {
     "signin_title": "Sign in to your account",
