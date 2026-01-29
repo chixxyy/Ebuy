@@ -47,7 +47,7 @@ const displayCategory = computed(() => {
 <template>
   <div class="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden border border-gray-100 flex flex-col h-full">
     <!-- Image Container -->
-    <div class="relative aspect-square overflow-hidden bg-gray-50">
+    <router-link :to="`/products/${product.id}`" class="relative aspect-square overflow-hidden bg-gray-50 block cursor-pointer">
       <img 
         :src="product.image" 
         :alt="displayName" 
@@ -77,13 +77,17 @@ const displayCategory = computed(() => {
       <div v-if="product.rating > 4.5" class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-indigo-600 shadow-sm">
         {{ $t('home.top_rated') }}
       </div>
-    </div>
+    </router-link>
 
-    <!-- Content -->
     <div class="p-5 flex flex-col flex-grow">
-      <div class="text-xs font-medium text-indigo-500 mb-1 uppercase tracking-wider">{{ displayCategory }}</div>
+      <div class="flex justify-between items-center mb-1">
+          <div class="text-xs font-medium text-indigo-500 uppercase tracking-wider">{{ displayCategory }}</div>
+          <router-link v-if="product.seller" :to="`/user/${product.seller.id}`" class="text-xs text-gray-400 hover:text-indigo-600 truncate max-w-[50%]">
+              by {{ product.seller.name }}
+          </router-link>
+      </div>
       <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
-        {{ displayName }}
+        <router-link :to="`/products/${product.id}`">{{ displayName }}</router-link>
       </h3>
       <p class="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed flex-grow">
         {{ displayDescription }}

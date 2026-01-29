@@ -55,7 +55,6 @@ const logout = () => {
 
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center space-x-8">
-          <router-link to="/" class="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">{{ $t('nav.home') }}</router-link>
           <router-link to="/products" class="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">{{ $t('nav.products') }}</router-link>
           
           <div class="h-4 w-px bg-gray-300"></div>
@@ -77,10 +76,10 @@ const logout = () => {
                   <span class="hidden lg:inline">{{ $t('nav.add_product') }}</span>
                </router-link>
 
-               <div class="flex items-center gap-2 text-sm font-medium text-gray-700 px-3 py-1.5 rounded-full bg-gray-100/50 hover:bg-gray-100 transition-colors">
+               <router-link :to="`/user/${authStore.user.id}`" class="flex items-center gap-2 text-sm font-medium text-gray-700 px-3 py-1.5 rounded-full bg-gray-100/50 hover:bg-gray-100 transition-colors">
                   <User class="w-4 h-4 text-indigo-600" />
                   {{ authStore.user.name }}
-               </div>
+               </router-link>
                <button @click="logout" class="text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
                  <LogOut class="w-5 h-5" />
                </button>

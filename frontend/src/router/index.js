@@ -39,9 +39,19 @@ const router = createRouter({
         component: () => import('../views/AddProductView.vue')
     },
     {
+        path: '/products/:id',
+        name: 'product-detail',
+        component: () => import('../views/ProductDetailView.vue')
+    },
+    {
         path: '/edit-product/:id',
         name: 'edit-product',
         component: () => import('../views/EditProductView.vue')
+    },
+    {
+        path: '/user/:id',
+        name: 'user-profile',
+        component: () => import('../views/UserProfileView.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

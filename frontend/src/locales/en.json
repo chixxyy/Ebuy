@@ -82,6 +82,21 @@
         "Other": "Other"
     }
   },
+  "profile": {
+    "name": "Name",
+    "bio": "Bio",
+    "bio_placeholder": "Tell us about yourself...",
+    "joined": "Joined",
+    "edit": "Edit Profile",
+    "create": "Create Profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "no_bio": "No introduction provided.",
+    "user_products": "Products from {name}",
+    "no_products": "No products listed yet.",
+    "user_not_found": "User not found",
+    "return_home": "Return Home"
+  },
   "items": {
     "1": {
       "name": "Premium Wireless Headphones",

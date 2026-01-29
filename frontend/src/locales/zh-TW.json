@@ -82,6 +82,21 @@
         "Other": "其他"
     }
   },
+  "profile": {
+    "name": "名稱",
+    "bio": "個人簡介",
+    "bio_placeholder": "介紹一下你自己...",
+    "joined": "加入時間",
+    "edit": "編輯個人資料",
+    "create": "建立個人檔案",
+    "save": "儲存",
+    "cancel": "取消",
+    "no_bio": "尚無簡介。",
+    "user_products": "{name} 的商品",
+    "no_products": "尚未上架任何商品。",
+    "user_not_found": "找不到該使用者",
+    "return_home": "返回首頁"
+  },
   "items": {
     "1": {
       "name": "高級無線耳機",

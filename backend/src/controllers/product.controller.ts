@@ -5,7 +5,19 @@ const prisma = new PrismaClient();
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        _count: {
+            select: { comments: true }
+        }
+      }
+    });
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching products', error });
@@ -101,5 +113,73 @@ export const deleteProduct = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting product', error });
   }
+};
+
+export const getProductById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const product = await prisma.product.findUnique({
+            where: { id: parseInt(id as string) },
+            include: {
+                seller: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        bio: true
+                    }
+                },
+                comments: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    },
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                }
+            }
+        });
+        
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching product', error });
+    }
+};
+
+export const createComment = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { content } = req.body;
+        const userId = (req as any).user.userId;
+
+        const comment = await prisma.comment.create({
+            data: {
+                content,
+                productId: parseInt(id as string),
+                userId
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        });
+
+        res.status(201).json(comment);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating comment', error });
+    }
 };
 

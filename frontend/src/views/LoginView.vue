@@ -3,14 +3,14 @@ import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useRouter } from 'vue-router'
 
-const username = ref('')
+const email = ref('')
 const password = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
 const error = ref('')
 
-const handleLogin = () => {
-  if (authStore.login(username.value, password.value)) {
+const handleLogin = async () => {
+  if (await authStore.login(email.value, password.value)) {
     router.push('/')
   } else {
     error.value = 'Invalid credentials'
@@ -29,8 +29,8 @@ const handleLogin = () => {
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="username" class="sr-only">{{ $t('auth.username') }}</label>
-            <input id="username" v-model="username" name="username" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" :placeholder="$t('auth.username')">
+            <label for="email" class="sr-only">{{ $t('auth.email') }}</label>
+            <input id="email" v-model="email" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" :placeholder="$t('auth.email')">
           </div>
           <div>
             <label for="password" class="sr-only">{{ $t('auth.password') }}</label>

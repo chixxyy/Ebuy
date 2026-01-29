@@ -9,9 +9,11 @@ const password = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
 
-const handleRegister = () => {
-  if (authStore.register(username.value, password.value, email.value)) {
-    router.push('/')
+const handleRegister = async () => {
+  if (await authStore.register(username.value, password.value, email.value)) {
+    router.push('/login')
+  } else {
+    alert('Registration failed')
   }
 }
 </script>
