@@ -1,0 +1,171 @@
+{
+  "id": "app-content",
+  "dictionary": {
+    "en": {
+      "nav": {
+        "home": "Home",
+        "products": "Products",
+        "login": "Log in",
+        "signup": "Sign up",
+        "logout": "Logout",
+        "add_product": "Add Product"
+      },
+      "home": {
+        "new_collection": "New Collection 2026",
+        "hero_title": "Elevate Your",
+        "hero_subtitle": "Daily Lifestyle",
+        "hero_desc": "Explore our curated selection of premium goods, designed to add beauty and quality to your daily life. A perfect blend of quality and aesthetics.",
+        "shop_now": "Shop Now",
+        "learn_more": "Learn More",
+        "top_rated": "Top Rated",
+        "quality_5_star": "5-Star Quality",
+        "features": {
+          "shipping": "Free Shipping",
+          "shipping_desc": "Enjoy free shipping on orders over $100",
+          "secure": "Secure Payment",
+          "secure_desc": "100% secure payment system",
+          "support": "24/7 Support",
+          "support_desc": "Dedicated support team at your service"
+        },
+        "featured_title": "Featured Products",
+        "featured_desc": "Check out what's trending this week.",
+        "view_all": "View All"
+      },
+      "cart": {
+        "title": "Shopping Cart",
+        "empty": "Your cart is empty",
+        "empty_desc": "Looks like you haven't added anything to your cart yet. Browse our products to find something you'll love.",
+        "start_shopping": "Start Shopping",
+        "remove": "Remove",
+        "summary": "Order Summary",
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "tax": "Tax",
+        "total": "Total",
+        "checkout": "Checkout",
+        "free": "Free"
+      },
+      "products": {
+        "title": "Our Collection",
+        "subtitle": "Discover handpicked items for your lifestyle.",
+        "search": "Search products...",
+        "filters": "Filters",
+        "price": "Price",
+        "add_to_cart": "Add to Cart",
+        "confirm_delete": "Are you sure you want to delete this product?",
+        "sold_by": "Sold by",
+        "contact_seller": "Contact Seller",
+        "ask_placeholder": "Ask a question or leave a review...",
+        "post_comment": "Post Comment",
+        "comments_title": "Comments & Questions",
+        "login_prompt_start": "Please ",
+        "login_prompt_end": " to leave a comment.",
+        "login_link": "log in",
+        "no_comments": "No comments yet. Be the first to ask!",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete",
+        "by": "by",
+        "reviews_count": "{count} reviews"
+      },
+      "auth": {
+        "signin_title": "Sign in to your account",
+        "signup_title": "Create your account",
+        "username": "Username",
+        "password": "Password",
+        "email": "Email address",
+        "signin_btn": "Sign in",
+        "register_btn": "Register",
+        "no_account": "Don't have an account? Register now",
+        "has_account": "Already have an account? Sign in now",
+        "hero_badge": "New Arrivals",
+        "invalid_credentials": "Incorrect username or password"
+      },
+      "add_product": {
+        "title": "Add New Product",
+        "name": "Product Name",
+        "price": "Price",
+        "category": "Category",
+        "image": "Image",
+        "description": "Product Description",
+        "cancel": "Cancel",
+        "submit": "Add Product",
+        "categories": {
+          "Audio": "Audio",
+          "Furniture": "Furniture",
+          "Gaming": "Gaming",
+          "Wearables": "Wearables",
+          "Accessories": "Accessories",
+          "Bags": "Bags",
+          "Other": "Other"
+        }
+      },
+      "profile": {
+        "name": "Name",
+        "bio": "Bio",
+        "bio_placeholder": "Tell us about yourself...",
+        "joined": "Joined",
+        "edit": "Edit Profile",
+        "create": "Create Profile",
+        "save": "Save",
+        "cancel": "Cancel",
+        "no_bio": "No introduction provided.",
+        "user_products": "Products from {name}",
+        "no_products": "No products listed yet.",
+        "user_not_found": "User not found",
+        "return_home": "Return Home"
+      },
+      "alert": {
+        "success": "Success",
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Info",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No",
+        "delete_confirm": "Are you sure you want to delete?",
+        "delete_success": "Deleted successfully",
+        "update_success": "Updated successfully",
+        "create_success": "Created successfully",
+        "login_success": "Login successful",
+        "register_success": "Registration successful",
+        "login_failed": "Login failed",
+        "register_failed": "Registration failed"
+      },
+      "items": {
+        "1": {
+          "name": "Premium Wireless Headphones",
+          "description": "Experience high-fidelity sound with active noise cancellation and 30-hour battery life.",
+          "category": "Audio"
+        },
+        "2": {
+          "name": "Ergonomic Office Chair",
+          "description": "Fully adjustable ergonomic design, with a mesh back providing excellent breathability and lumbar support.",
+          "category": "Furniture"
+        },
+        "3": {
+          "name": "Mechanical Gaming Keyboard",
+          "description": "Tactile mechanical switches and customizable RGB lighting for the ultimate gaming experience. Durable aluminum frame.",
+          "category": "Gaming"
+        },
+        "4": {
+          "name": "Smart Fitness Watch",
+          "description": "Accurately track your workouts, heart rate, and sleep. Features water resistance and a vibrant OLED display.",
+          "category": "Wearables"
+        },
+        "5": {
+          "name": "Designer Aviator Sunglasses",
+          "description": "Protect your eyes in style with these premium aviator sunglasses. Polarization for reduced glare.",
+          "category": "Accessories"
+        },
+        "6": {
+          "name": "Minimalist Urban Backpack",
+          "description": "Durable and stylish backpack for daily commute. Features a padded laptop compartment and water-resistant fabric.",
+          "category": "Bags"
+        }
+      }
+    }
+  }
+}
