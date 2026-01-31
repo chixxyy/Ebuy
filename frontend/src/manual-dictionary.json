@@ -67,6 +67,7 @@
         "edit": "Edit",
         "delete": "Delete",
         "by": "by",
+        "stock": "Stock",
         "reviews_count": "{count} reviews"
       },
       "auth": {
@@ -233,6 +234,7 @@
         "edit": "編輯",
         "delete": "刪除",
         "by": "賣家：",
+        "stock": "庫存",
         "reviews_count": "{count} 則評論"
       },
       "auth": {

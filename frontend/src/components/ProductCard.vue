@@ -185,7 +185,7 @@ watch(
               'text-gray-400': !isStockAnimating,
             }"
           >
-            Stock: {{ product.stock }}
+            {{ products.stock }}: {{ product.stock }}
           </div>
         </div>
       </div>
