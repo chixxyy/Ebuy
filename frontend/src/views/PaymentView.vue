@@ -18,11 +18,15 @@ const isProcessing = ref(false)
 const errorMessage = ref('')
 const clientSecret = ref('')
 const amount = ref(0)
+const currency = ref('')
 const stripe = ref(null)
 const elements = ref(null)
 const cardElement = ref(null)
 
 onMounted(async () => {
+    // Sync cart first to ensure amounts match
+    await cartStore.fetchCart()
+
     try {
         // 1. Fetch Client Secret
         const user = JSON.parse(localStorage.getItem('user'))
@@ -53,6 +57,7 @@ onMounted(async () => {
         const data = await res.json()
         clientSecret.value = data.clientSecret
         amount.value = data.amount // Backend should return amount for display
+        currency.value = data.currency || 'USD'
 
         // 2. Initialize Stripe
         stripe.value = await stripePromise
@@ -123,6 +128,16 @@ const handlePayment = async () => {
         } else {
             // Success!
             if (result.paymentIntent.status === 'succeeded') {
+                // Call backend to finalize order (deduct stock, clear cart)
+                const user = JSON.parse(localStorage.getItem('user'))
+                await fetch('http://localhost:3000/api/payment/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+
                 showToast(payment.value.success, 'success')
                 // Clear cart locally since backend payment succeeded implies purchase
                 cartStore.clearCart() 
@@ -152,12 +167,26 @@ const handlePayment = async () => {
 
       <div v-else>
           <!-- Order Summary -->
-          <div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
-              <div class="flex justify-between items-center mb-2">
-                  <span class="text-gray-600 font-medium">{{ cart.total }}</span>
-                  <span class="text-2xl font-bold text-indigo-600">${{ amount }}</span>
+          <div class="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-100">
+              <h3 class="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider">Order Summary</h3>
+              
+              <div class="space-y-3 mb-4 max-h-60 overflow-y-auto custom-scrollbar">
+                  <div v-for="item in cartStore.items" :key="item.id" class="flex justify-between items-start text-sm">
+                      <div class="flex-1 pr-4">
+                          <span class="text-gray-700 font-medium">{{ item.quantity }}x {{ item.name }}</span>
+                      </div>
+                      <span class="text-gray-900">${{ item.price * item.quantity }}</span>
+                  </div>
               </div>
-              <div class="text-xs text-gray-400 text-right">
+
+              <div class="border-t border-gray-200 pt-4 flex justify-between items-center">
+                  <span class="text-gray-600 font-medium">{{ cart.total }}</span>
+                  <div class="flex items-center gap-1">
+                      <span class="text-lg font-medium text-gray-400">{{ currency }}</span>
+                      <span class="text-2xl font-bold text-indigo-600">${{ amount }}</span>
+                  </div>
+              </div>
+              <div class="text-xs text-gray-400 text-right mt-1">
                 Includes taxes and fees
               </div>
           </div>

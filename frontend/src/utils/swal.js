@@ -11,6 +11,7 @@ const Toast = Swal.mixin({
     toast.addEventListener("mouseenter", Swal.stopTimer);
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
+  showCloseButton: true,
 });
 
 export const showAlert = (
@@ -31,6 +32,7 @@ export const showAlert = (
       title: "text-xl font-bold",
       htmlContainer: "text-sm",
     },
+    showCloseButton: true,
   });
 };
 
@@ -56,6 +58,7 @@ export const showConfirm = (
       title: "text-xl font-bold",
       htmlContainer: "text-sm",
     },
+    showCloseButton: true,
   });
 };
 

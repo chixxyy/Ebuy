@@ -1,5 +1,15 @@
 <script setup>
 import NavBar from "./components/NavBar.vue";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("clear") === "true") {
+    localStorage.clear();
+    // Remove the query param to avoid loop, and reload to reset state
+    window.location.href = window.location.origin;
+  }
+});
 </script>
 
 <template>

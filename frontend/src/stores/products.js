@@ -84,9 +84,14 @@ export const useProductStore = defineStore("products", () => {
         body: JSON.stringify(productData),
       });
       if (!response.ok) throw new Error("Failed to update product");
+      
       const updatedProduct = await response.json();
+      
+      // Local State Mutation: Find and Update
+      // Using '==' to handle potential string/number mismatches from API/Route params
       const index = products.value.findIndex((p) => p.id == id);
       if (index !== -1) {
+        // Update the product in the array to trigger reactivity
         products.value[index] = updatedProduct;
       }
       return true;
@@ -106,7 +111,11 @@ export const useProductStore = defineStore("products", () => {
         }
       });
       if (!response.ok) throw new Error("Failed to delete product");
+      
+      // Local State Mutation: Remove from array
+      // This is more efficient than re-fetching the entire list
       products.value = products.value.filter((p) => p.id != id);
+      
       return true;
     } catch (e) {
       error.value = e.message;

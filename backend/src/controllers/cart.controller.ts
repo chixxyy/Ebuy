@@ -34,3 +34,27 @@ export const getCart = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching cart", error });
   }
 };
+
+export const removeFromCart = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId;
+    const { id } = req.params; // productId
+
+    await CartService.removeFromCart(userId, parseInt(id as string));
+    res.json({ message: "Item removed" });
+  } catch (error) {
+    res.status(500).json({ message: "Error removing item", error });
+  }
+};
+
+export const updateCartQuantity = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId;
+    const { productId, quantity } = req.body;
+
+    await CartService.updateCartQuantity(userId, parseInt(productId), parseInt(quantity));
+    res.json({ message: "Cart updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating cart", error });
+  }
+};

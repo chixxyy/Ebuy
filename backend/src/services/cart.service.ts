@@ -17,49 +17,9 @@ export const addToCartDebounced = async (
   productId: number,
   quantity: number,
 ) => {
-  // 1. Accumulate quantity
-  if (!pendingUpdates.has(userId)) {
-    pendingUpdates.set(userId, new Map());
-  }
-  const userUpdates = pendingUpdates.get(userId)!;
-  const currentQty = userUpdates.get(productId) || 0;
-  userUpdates.set(productId, currentQty + quantity);
-
-  console.log(
-    `[Debounce] User ${userId} requested add ${quantity} for Product ${productId}. Pending total: ${currentQty + quantity}`,
-  );
-
-  // 2. Clear existing timer
-  if (debounceTimers.has(userId)) {
-    clearTimeout(debounceTimers.get(userId));
-  }
-
-  // 3. Set new timer
-  const timer = setTimeout(async () => {
-    debounceTimers.delete(userId);
-    const finalUpdates = pendingUpdates.get(userId);
-    pendingUpdates.delete(userId); // Clear pending
-
-    if (!finalUpdates) return;
-
-    console.log(`[Debounce] Executing updates for User ${userId}`, [
-      ...finalUpdates.entries(),
-    ]);
-
-    // Process updates
-    try {
-      await processCartUpdates(userId, finalUpdates);
-    } catch (error) {
-      console.error(
-        `[Debounce] Error processing cart for User ${userId}:`,
-        error,
-      );
-    }
-  }, DEBOUNCE_DELAY);
-
-  debounceTimers.set(userId, timer);
-
-  return { status: "queued", message: "Request queued for debounce" };
+  // Direct DB write to safely prevent any in-memory mix-ups
+  const result = await processCartUpdates(userId, new Map([[productId, quantity]]));
+  return { status: "success", message: "Item added to cart", result };
 };
 
 const processCartUpdates = async (
@@ -92,18 +52,19 @@ const processCartUpdates = async (
         continue;
       }
 
-      // Decrement Stock
-      await tx.product.update({
-        where: { id: productId },
-        data: { stock: { decrement: quantity } },
-      });
-
+      // NOTE: Traditional e-commerce does NOT decrement stock on 'Add to Cart'.
+      // Stock is only decremented on 'Purchase/Checkout'.
+      // We only CHECK if there is enough stock here to prevent adding obviously OOS items.
+      
       // Update Cart Item
       const existingItem = await tx.cartItem.findFirst({
         where: { cartId: cart.id, productId },
       });
 
       if (existingItem) {
+        // Optional: Check if (existingItem.quantity + quantity) > product.stock
+        // But stock varies, so maybe just let it be for now and strict check at checkout.
+        
         await tx.cartItem.update({
           where: { id: existingItem.id },
           data: { quantity: { increment: quantity } },
@@ -127,7 +88,45 @@ export const getCart = async (userId: number) => {
     include: {
       items: {
         include: { product: true },
+        orderBy: { productId: 'asc' }
       },
     },
   });
+};
+
+export const removeFromCart = async (userId: number, productId: number) => {
+  const cart = await prisma.cart.findUnique({ where: { userId } });
+  if (!cart) return;
+
+  await prisma.cartItem.deleteMany({
+    where: {
+      cartId: cart.id,
+      productId: productId,
+    },
+  });
+};
+
+export const updateCartQuantity = async (
+  userId: number,
+  productId: number,
+  quantity: number
+) => {
+  const cart = await prisma.cart.findUnique({ where: { userId } });
+  if (!cart) return;
+
+  if (quantity <= 0) {
+    await removeFromCart(userId, productId);
+    return;
+  }
+
+  const existingItem = await prisma.cartItem.findFirst({
+    where: { cartId: cart.id, productId },
+  });
+
+  if (existingItem) {
+    await prisma.cartItem.update({
+      where: { id: existingItem.id },
+      data: { quantity },
+    });
+  }
 };

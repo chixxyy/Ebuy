@@ -82,6 +82,17 @@ export const updateProduct = async (req: Request, res: Response) => {
         image,
         category,
       },
+      include: {
+        seller: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        _count: {
+            select: { comments: true },
+        },
+      },
     });
 
     res.json(product);

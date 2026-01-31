@@ -85,15 +85,15 @@ const saveComment = async (commentId) => {
 
 const deleteComment = async (commentId) => {
   const result = await showConfirm(
-    alert.warning.value,
-    alert.delete_confirm.value,
-    alert.yes.value,
-    alert.no.value,
+    alert.value.warning,
+    alert.value.delete_confirm,
+    alert.value.yes,
+    alert.value.no,
   );
 
   if (result.isConfirmed) {
     if (await productStore.deleteComment(commentId)) {
-      showToast(alert.delete_success.value);
+      showToast(alert.value.delete_success);
       await fetchProduct();
     }
   }
@@ -102,6 +102,30 @@ const deleteComment = async (commentId) => {
 onMounted(() => {
   fetchProduct();
 });
+
+// Image Zoom Logic
+const zoomStyle = ref({
+  transformOrigin: "center center",
+  transform: "scale(1)",
+});
+
+const handleMouseMove = (e) => {
+  const { left, top, width, height } = e.target.getBoundingClientRect();
+  const x = ((e.clientX - left) / width) * 100;
+  const y = ((e.clientY - top) / height) * 100;
+  
+  zoomStyle.value = {
+    transformOrigin: `${x}% ${y}%`,
+    transform: "scale(2)",
+  };
+};
+
+const handleMouseLeave = () => {
+  zoomStyle.value = {
+    transformOrigin: "center center",
+    transform: "scale(1)",
+  };
+};
 </script>
 
 <template>
@@ -116,12 +140,15 @@ onMounted(() => {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Product Image -->
         <div
-          class="bg-white rounded-2xl p-8 shadow-sm flex items-center justify-center"
+          class="bg-white rounded-2xl p-8 shadow-sm flex items-center justify-center overflow-hidden cursor-zoom-in relative"
         >
           <img
             :src="product.image"
             :alt="product.name"
-            class="max-h-[500px] object-contain"
+            class="max-h-[500px] object-contain transition-transform duration-200 ease-out origin-center"
+            :style="zoomStyle"
+            @mousemove="handleMouseMove"
+            @mouseleave="handleMouseLeave"
           />
         </div>
 

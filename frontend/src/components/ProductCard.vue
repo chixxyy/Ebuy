@@ -99,8 +99,8 @@ watch(
         class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0"
       >
         <button
-          @click.stop="addToCart"
-          class="w-full bg-indigo-600/90 backdrop-blur-sm text-white py-3 rounded-xl font-medium shadow-lg hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2"
+          @click.stop.prevent="addToCart"
+          class="w-full bg-indigo-600/90 backdrop-blur-sm text-white py-3 rounded-xl font-medium shadow-lg hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <ShoppingCart class="w-5 h-5" />
           {{ products.add_to_cart }}
@@ -121,15 +121,15 @@ watch(
     <!-- Edit/Delete Actions (Moved outside router-link to be clickable) -->
     <div v-if="canModifyProduct" class="absolute top-3 right-3 flex gap-2 z-10">
       <button
-        @click.stop="$router.push(`/edit-product/${product.id}`)"
-        class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-indigo-600 hover:bg-white transition-all"
+        @click.stop.prevent="$router.push(`/edit-product/${product.id}`)"
+        class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-indigo-600 hover:bg-white transition-all cursor-pointer hover:scale-110 hover:shadow-md hover:ring-2 hover:ring-indigo-100"
         :title="products.edit"
       >
         <Pencil class="w-4 h-4" />
       </button>
       <button
-        @click.stop="handleDelete"
-        class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-red-600 hover:bg-white transition-all"
+        @click.stop.prevent="handleDelete"
+        class="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm text-gray-600 hover:text-red-600 hover:bg-white transition-all cursor-pointer hover:scale-110 hover:shadow-md hover:ring-2 hover:ring-red-100"
         :title="products.delete"
       >
         <Trash2 class="w-4 h-4" />
