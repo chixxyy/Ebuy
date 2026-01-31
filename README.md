@@ -58,6 +58,10 @@ cd backend
 npx vitest run
 ```
 
+```bash
+npx prisma studio
+```
+
 ## 🧹 程式碼整理 (Linting & Formatting)
 
 本專案使用 Prettier 進行程式碼格式化。

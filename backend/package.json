@@ -4,8 +4,9 @@
   "description": "This directory is reserved for the backend application logic.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "build": "tsc",
+    "dev": "cp prisma/schema.sqlite.prisma prisma/schema.prisma && prisma generate && nodemon src/server.ts",
+    "build": "cp prisma/schema.postgres.prisma prisma/schema.prisma && prisma generate && tsc",
+    "postinstall": "cp prisma/schema.postgres.prisma prisma/schema.prisma && prisma generate",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,12 +15,15 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@types/fs-extra": "^11.0.4",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "fs-extra": "^11.3.3",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
+    "pg": "^8.18.0",
     "socket.io": "^4.8.3",
     "stripe": "^20.3.0"
   },
