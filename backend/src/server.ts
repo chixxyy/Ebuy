@@ -37,8 +37,53 @@ app.use("/api/payment", paymentRoutes);
 import path from "path";
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-app.get("/", (req, res) => {
-  res.send("Backend is running");
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ebuy Backend Status</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                background-color: #f0fdf4;
+                color: #166534;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .card {
+                background: white;
+                padding: 2rem;
+                border-radius: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                text-align: center;
+                max-width: 400px;
+            }
+            .status-dot {
+                height: 12px;
+                width: 12px;
+                background-color: #22c55e;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 8px;
+            }
+            h1 { margin-top: 0; }
+            p { color: #4b5563; }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1><span class="status-dot"></span>System Operational</h1>
+            <p>Ebuy Backend is running smoothly.</p>
+            <p style="font-size: 0.875rem; color: #9ca3af;">Env: ${process.env.NODE_ENV || 'development'} | Time: ${new Date().toISOString()}</p>
+        </div>
+    </body>
+    </html>
+  `);
 });
 
 httpServer.listen(PORT, () => {

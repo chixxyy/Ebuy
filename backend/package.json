@@ -4,9 +4,9 @@
   "description": "This directory is reserved for the backend application logic.",
   "main": "index.js",
   "scripts": {
-    "dev": "cp prisma/schema.sqlite.prisma prisma/schema.prisma && prisma generate && nodemon src/server.ts",
-    "build": "cp prisma/schema.postgres.prisma prisma/schema.prisma && prisma generate && tsc",
-    "postinstall": "cp prisma/schema.postgres.prisma prisma/schema.prisma && prisma generate",
+    "dev": "nodemon src/server.ts",
+    "build": "prisma generate && tsc",
+    "postinstall": "prisma generate",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
