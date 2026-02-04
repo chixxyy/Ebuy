@@ -40,3 +40,4 @@ Desktop.ini
 # Test results
 test_auth.sh
 result.log
+.vercel
