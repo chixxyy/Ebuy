@@ -11,6 +11,7 @@ import cartRoutes from "./routes/cart.routes";
 import inventoryRoutes from "./routes/inventory.routes";
 import paymentRoutes from "./routes/payment.routes";
 import { initSocket } from "./socket";
+import path from "path";
 
 dotenv.config();
 
@@ -34,7 +35,6 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/payment", paymentRoutes);
 
 // Serve static files from uploads directory
-import path from "path";
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/", (req, res) => {
@@ -86,7 +86,6 @@ app.get("/", (req, res) => {
     </html>
   `);
 });
-
 
 httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
