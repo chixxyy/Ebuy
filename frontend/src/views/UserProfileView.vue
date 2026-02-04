@@ -32,7 +32,7 @@ const fetchUserProfile = async (userId) => {
   loading.value = true;
   const id = userId || route.params.id;
   try {
-    const response = await fetch(`http://localhost:3000/api/users/${id}`);
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
     if (response.ok) {
       user.value = await response.json();
     }
@@ -57,7 +57,7 @@ const cancelEdit = () => {
 
 const saveProfile = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/users/profile", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

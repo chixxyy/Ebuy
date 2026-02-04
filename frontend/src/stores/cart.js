@@ -37,7 +37,7 @@ export const useCartStore = defineStore("cart", () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token) {
       try {
-        await fetch("http://localhost:3000/api/cart", {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const useCartStore = defineStore("cart", () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token) {
         try {
-            await fetch(`http://localhost:3000/api/cart/${productId}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${productId}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${user.token}` }
             });
@@ -92,7 +92,7 @@ export const useCartStore = defineStore("cart", () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token && quantity > 0) {
         try {
-            await fetch(`http://localhost:3000/api/cart`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
                 method: "PUT",
                 headers: { 
                     "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export const useCartStore = defineStore("cart", () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token) {
       try {
-        const res = await fetch("http://localhost:3000/api/cart", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

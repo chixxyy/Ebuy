@@ -30,7 +30,7 @@ const fetchProduct = async () => {
   loading.value = true;
   try {
     const response = await fetch(
-      `http://localhost:3000/api/products/${route.params.id}`,
+      `${import.meta.env.VITE_API_URL}/api/products/${route.params.id}`,
     );
     if (response.ok) {
       product.value = await response.json();

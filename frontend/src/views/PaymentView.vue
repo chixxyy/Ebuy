@@ -35,7 +35,7 @@ onMounted(async () => {
             return
         }
 
-        const res = await fetch('http://localhost:3000/api/payment/create-payment-intent', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/create-payment-intent`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user.token}`,
@@ -130,7 +130,7 @@ const handlePayment = async () => {
             if (result.paymentIntent.status === 'succeeded') {
                 // Call backend to finalize order (deduct stock, clear cart)
                 const user = JSON.parse(localStorage.getItem('user'))
-                await fetch('http://localhost:3000/api/payment/checkout', {
+                await fetch(`${import.meta.env.VITE_API_URL}/api/payment/checkout`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${user.token}`,

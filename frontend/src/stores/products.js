@@ -10,7 +10,7 @@ export const useProductStore = defineStore("products", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await fetch("http://localhost:3000/api/products");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
       if (!response.ok) throw new Error("Failed to fetch products");
       products.value = await response.json();
     } catch (e) {
@@ -28,7 +28,7 @@ export const useProductStore = defineStore("products", () => {
 
     // Dynamic import to avoid SSR issues if any, though here it's SPA
     import("socket.io-client").then(({ io }) => {
-      socket = io("http://localhost:3000");
+      socket = io(import.meta.env.VITE_API_URL);
 
       socket.on("connect", () => {
         console.log("📦 Socket.IO Connected");
@@ -54,7 +54,7 @@ export const useProductStore = defineStore("products", () => {
 
   async function addProduct(productData) {
     try {
-      const response = await fetch("http://localhost:3000/api/products", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const useProductStore = defineStore("products", () => {
 
   async function updateProduct(id, productData) {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export const useProductStore = defineStore("products", () => {
 
   async function deleteProduct(id) {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
         method: "DELETE",
         headers: {
             Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
@@ -127,7 +127,7 @@ export const useProductStore = defineStore("products", () => {
   async function addComment(productId, content) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/products/${productId}/comments`,
+        `${import.meta.env.VITE_API_URL}/api/products/${productId}/comments`,
         {
           method: "POST",
           headers: {
@@ -149,7 +149,7 @@ export const useProductStore = defineStore("products", () => {
   async function updateComment(commentId, content) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comments/${commentId}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -171,7 +171,7 @@ export const useProductStore = defineStore("products", () => {
   async function deleteComment(commentId) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/comments/${commentId}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
         {
           method: "DELETE",
           headers: {
