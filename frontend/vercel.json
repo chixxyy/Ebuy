@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:match*",
-      "destination": "https://YOUR_REAL_BACKEND_URL.com/api/:match*"
+      "destination": "https://ebuybend.vercel.app/api/:match*"
     },
     {
       "source": "/(.*)",
