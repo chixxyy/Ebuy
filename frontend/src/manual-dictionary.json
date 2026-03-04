@@ -68,7 +68,8 @@
         "delete": "Delete",
         "by": "by",
         "stock": "Stock",
-        "reviews_count": "{count} reviews"
+        "reviews_count": "{count} reviews",
+        "empty_search": "No products found matching your criteria."
       },
       "auth": {
         "signin_title": "Sign in to your account",
@@ -245,7 +246,8 @@
         "delete": "刪除",
         "by": "賣家：",
         "stock": "庫存",
-        "reviews_count": "{count} 則評論"
+        "reviews_count": "{count} 則評論",
+        "empty_search": "未找到符合篩選條件的商品。"
       },
       "auth": {
         "signin_title": "登入您的帳戶",

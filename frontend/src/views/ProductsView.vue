@@ -8,18 +8,18 @@ import { ref, computed } from "vue";
 
 // import { useIntlayer } from 'vue-intlayer' // Removed
 // import dictionary from '../manual-dictionary.json' // Removed
-import { useContent } from "../composables/useContent";
+import { useContent, normalizeCategory } from "../composables/useContent";
 
 const productStore = useProductStore();
 const { products: storeProducts, isLoading } = storeToRefs(productStore);
-const { products } = useContent();
+const { products, add_product } = useContent();
 
 const searchQuery = ref("");
 const selectedCategory = ref("All");
 const showCategoryDropdown = ref(false);
 
 const categories = computed(() => {
-  const cats = new Set(storeProducts.value.map((p) => p.category));
+  const cats = new Set(storeProducts.value.map((p) => normalizeCategory(p.category)));
   return ["All", ...Array.from(cats)];
 });
 
@@ -27,7 +27,7 @@ const filteredProducts = computed(() => {
   return storeProducts.value.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
                           p.description.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesCategory = selectedCategory.value === "All" || p.category === selectedCategory.value;
+    const matchesCategory = selectedCategory.value === "All" || normalizeCategory(p.category) === selectedCategory.value;
     return matchesSearch && matchesCategory;
   });
 });
@@ -70,7 +70,7 @@ const selectCategory = (category) => {
               class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition-colors"
             >
               <Filter class="w-5 h-5" />
-              <span class="hidden sm:inline">{{ selectedCategory === 'All' ? products.filters : selectedCategory }}</span>
+              <span class="hidden sm:inline">{{ selectedCategory === 'All' ? products.filters : (add_product.categories?.[selectedCategory] || selectedCategory) }}</span>
               <ChevronDown class="w-4 h-4 ml-1" />
             </button>
             <div
@@ -84,7 +84,7 @@ const selectCategory = (category) => {
                 class="w-full text-left px-4 py-2 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
                 :class="{ 'text-indigo-600 bg-indigo-50 font-medium': selectedCategory === category }"
               >
-                {{ category }}
+                {{ category === 'All' ? products.filters : (add_product.categories?.[category] || category) }}
               </button>
             </div>
           </div>
@@ -103,7 +103,7 @@ const selectCategory = (category) => {
         <!-- Actual Products -->
         <template v-else>
           <div v-if="filteredProducts.length === 0" class="col-span-full py-20 text-center text-gray-500">
-            No products found matching your criteria.
+            {{ products.empty_search }}
           </div>
           <ProductCard
             v-else

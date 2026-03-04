@@ -46,3 +46,20 @@ export function useContent() {
     },
   };
 }
+
+export const normalizeCategory = (cat) => {
+  if (!cat) return cat;
+  const seedMap = {
+    "影音設備": "Audio",
+    "音響": "Audio",
+    "家具": "Furniture",
+    "電競週邊": "Gaming",
+    "電競": "Gaming",
+    "穿戴裝置": "Wearables",
+    "配件": "Accessories",
+    "包袋": "Bags",
+    "包款": "Bags",
+    "其他": "Other"
+  };
+  return seedMap[cat] || cat;
+};

@@ -14,14 +14,13 @@ import {
   Trash2,
 } from "lucide-vue-next";
 import { showConfirm, showToast } from "../utils/swal";
-import { useContent } from "../composables/useContent";
+import { useContent, normalizeCategory } from "../composables/useContent";
 
 const route = useRoute();
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const productStore = useProductStore();
-const { products, alert, profile } = useContent();
-
+const { products, alert, profile, add_product } = useContent();
 const product = ref(null);
 const loading = ref(true);
 const newComment = ref("");
@@ -182,7 +181,7 @@ const handleMouseLeave = () => {
               class="flex items-center gap-2 text-indigo-600 font-medium mb-4"
             >
               <span class="px-3 py-1 bg-indigo-50 rounded-full text-sm">{{
-                product.category
+                add_product.categories?.[normalizeCategory(product.category)] || normalizeCategory(product.category)
               }}</span>
             </div>
 

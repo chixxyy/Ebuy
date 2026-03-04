@@ -32,7 +32,12 @@ const handleSubmit = async () => {
   // Validate
   if (!form.value.name || !form.value.price) return;
 
-  const success = await productStore.addProduct(form.value);
+  const submitData = { ...form.value };
+  if (!submitData.image) {
+    submitData.image = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"; // Default premium looking product image
+  }
+
+  const success = await productStore.addProduct(submitData);
   if (success) {
     showToast(alert.value.create_success);
     router.push("/products");

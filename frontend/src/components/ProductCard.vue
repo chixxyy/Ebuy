@@ -5,7 +5,7 @@ import { useProductStore } from "../stores/products";
 import { ShoppingCart, Pencil, Trash2 } from "lucide-vue-next";
 
 // import dictionary from '../manual-dictionary.json' // Removed
-import { useContent } from "../composables/useContent";
+import { useContent, normalizeCategory } from "../composables/useContent";
 import { computed, ref, watch } from "vue";
 import { showConfirm, showToast } from "../utils/swal";
 
@@ -19,7 +19,7 @@ const props = defineProps({
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const productStore = useProductStore();
-const { products, home, items, alert } = useContent();
+const { products, home, items, alert, add_product } = useContent();
 
 const addToCart = () => {
   cartStore.addItem(props.product);
@@ -53,9 +53,8 @@ const displayDescription = computed(() => {
 });
 
 const displayCategory = computed(() => {
-  return (
-    items.value[String(props.product.id)]?.category || props.product.category
-  );
+  const cat = items.value[String(props.product.id)]?.category || normalizeCategory(props.product.category);
+  return add_product.value?.categories?.[cat] || cat;
 });
 
 const canModifyProduct = computed(() => {

@@ -53,9 +53,14 @@ const handleSubmit = async () => {
   // Validate
   if (!form.value.name || !form.value.price) return;
 
+  const submitData = { ...form.value };
+  if (!submitData.image) {
+    submitData.image = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"; // Default premium looking product image
+  }
+
   const success = await productStore.updateProduct(
     parseInt(route.params.id),
-    form.value,
+    submitData,
   );
   if (success) {
     showToast(alert.value.update_success);
