@@ -21,7 +21,7 @@
         "quality_5_star": "5-Star Quality",
         "features": {
           "shipping": "Free Shipping",
-          "shipping_desc": "On all orders over $100",
+          "shipping_desc": "On all orders over $300",
           "secure": "Secure Payment",
           "secure_desc": "100% secure payment",
           "support": "24/7 Support",
@@ -101,7 +101,8 @@
           "Accessories": "Accessories",
           "Bags": "Bags",
           "Other": "Other"
-        }
+        },
+        "stock_label": "Stock Quantity"
       },
       "profile": {
         "name": "Name",
@@ -128,6 +129,7 @@
         "yes": "Yes",
         "no": "No",
         "delete_confirm": "Are you sure you want to delete this?",
+        "logout_confirm": "Are you sure you want to log out?",
         "delete_success": "Deleted successfully",
         "update_success": "Updated successfully",
         "create_success": "Created successfully",
@@ -199,7 +201,7 @@
         "quality_5_star": "五星級品質",
         "features": {
           "shipping": "全館免運",
-          "shipping_desc": "訂單滿 $100 即享免運優惠",
+          "shipping_desc": "訂單滿 $300 即享免運優惠",
           "secure": "安全支付",
           "secure_desc": "100% 安全加密支付系統",
           "support": "全天候客服",
@@ -279,7 +281,8 @@
           "Accessories": "配件",
           "Bags": "包款",
           "Other": "其他"
-        }
+        },
+        "stock_label": "庫存數量"
       },
       "profile": {
         "name": "名稱",
@@ -299,13 +302,14 @@
       "alert": {
         "success": "成功",
         "error": "錯誤",
-        "warning": "警告",
+        "warning": "提示",
         "info": "通知",
         "confirm": "確定",
         "cancel": "取消",
         "yes": "是",
         "no": "否",
         "delete_confirm": "確定要刪除嗎？",
+        "logout_confirm": "確定要登出嗎？",
         "delete_success": "刪除成功",
         "update_success": "更新成功",
         "create_success": "新增成功",

@@ -14,11 +14,12 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 // import dictionary from '../manual-dictionary.json' // Removed
 import { useContent } from "../composables/useContent";
+import { showConfirm, showToast } from "../utils/swal";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
-const { nav, locale, setLocale } = useContent();
+const { nav, locale, setLocale, alert } = useContent();
 
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
@@ -40,9 +41,19 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-const logout = () => {
-  authStore.logout();
-  router.push("/login");
+const logout = async () => {
+  const result = await showConfirm(
+    alert.value.warning,
+    alert.value.logout_confirm,
+    alert.value.yes,
+    alert.value.no,
+  );
+
+  if (result.isConfirmed) {
+    authStore.logout();
+    router.push("/login");
+    showToast(alert.value.success);
+  }
 };
 </script>
 

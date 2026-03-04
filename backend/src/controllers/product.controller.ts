@@ -27,7 +27,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, image, category } = req.body;
+    const { name, description, price, image, category, stock } = req.body;
 
     const product = await prisma.product.create({
       data: {
@@ -38,7 +38,7 @@ export const createProduct = async (req: Request, res: Response) => {
         category,
         rating: 0,
         reviews: 0,
-        stock: 10, // Default stock
+        stock: stock !== undefined ? parseInt(stock as string) : 10,
         seller: {
           connect: { id: (req as any).user.userId },
         },
@@ -54,7 +54,7 @@ export const createProduct = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, description, price, image, category } = req.body;
+    const { name, description, price, image, category, stock } = req.body;
 
     const productId = parseInt(id as string);
 
@@ -73,15 +73,21 @@ export const updateProduct = async (req: Request, res: Response) => {
         .json({ message: "Not authorized to update this product" });
     }
 
+    const dataPayload: any = {
+      name,
+      description,
+      price: parseFloat(price),
+      image,
+      category,
+    };
+
+    if (stock !== undefined) {
+      dataPayload.stock = parseInt(stock as string);
+    }
+
     const product = await prisma.product.update({
       where: { id: productId },
-      data: {
-        name,
-        description,
-        price: parseFloat(price),
-        image,
-        category,
-      },
+      data: dataPayload,
       include: {
         seller: {
           select: {
