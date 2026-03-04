@@ -32,7 +32,9 @@ const fetchUserProfile = async (userId) => {
   loading.value = true;
   const id = userId || route.params.id;
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+    );
     if (response.ok) {
       user.value = await response.json();
     }
@@ -57,14 +59,17 @@ const cancelEdit = () => {
 
 const saveProfile = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authStore.token}`,
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/users/profile`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token}`,
+        },
+        body: JSON.stringify(editForm.value),
       },
-      body: JSON.stringify(editForm.value),
-    });
+    );
 
     if (response.ok) {
       const updatedUser = await response.json();

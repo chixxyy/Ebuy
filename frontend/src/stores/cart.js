@@ -16,11 +16,11 @@ export const useCartStore = defineStore("cart", () => {
     // 1. Optimistic Update (Frontend feels instant)
     const existingItem = items.value.find((item) => item.id === product.id);
     const currentQty = existingItem ? existingItem.quantity : 0;
-    
+
     // Check Stock
     if (product.stock !== undefined && currentQty + 1 > product.stock) {
-        showToast(`抱歉, 只有 ${product.stock} 件商品在庫。`, "error");
-        return;
+      showToast(`抱歉, 只有 ${product.stock} 件商品在庫。`, "error");
+      return;
     }
 
     if (existingItem) {
@@ -67,12 +67,14 @@ export const useCartStore = defineStore("cart", () => {
     // Sync with backend
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token) {
-        try {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${productId}`, {
-                method: "DELETE",
-                headers: { Authorization: `Bearer ${user.token}` }
-            });
-        } catch(e) { console.error(e); }
+      try {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/cart/${productId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -91,16 +93,18 @@ export const useCartStore = defineStore("cart", () => {
     // Sync with backend
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.token && quantity > 0) {
-        try {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
-                method: "PUT",
-                headers: { 
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${user.token}` 
-                },
-                body: JSON.stringify({ productId, quantity })
-            });
-        } catch(e) { console.error(e); }
+      try {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ productId, quantity }),
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -123,11 +127,11 @@ export const useCartStore = defineStore("cart", () => {
           // Backend returns { userId, items: [{ product: {...}, quantity: 1 }] }
           // We need to map it to our flat structure: { ...product, quantity }
           if (data && data.items) {
-             items.value = data.items.map(item => ({
-                 ...item.product,
-                 quantity: item.quantity
-             }));
-             saveCart();
+            items.value = data.items.map((item) => ({
+              ...item.product,
+              quantity: item.quantity,
+            }));
+            saveCart();
           }
         }
       } catch (e) {

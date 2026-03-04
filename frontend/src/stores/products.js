@@ -10,7 +10,9 @@ export const useProductStore = defineStore("products", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`,
+      );
       if (!response.ok) throw new Error("Failed to fetch products");
       products.value = await response.json();
     } catch (e) {
@@ -54,14 +56,17 @@ export const useProductStore = defineStore("products", () => {
 
   async function addProduct(productData) {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
+          },
+          body: JSON.stringify(productData),
         },
-        body: JSON.stringify(productData),
-      });
+      );
       if (!response.ok) throw new Error("Failed to add product");
       const newProduct = await response.json();
       products.value.push(newProduct);
@@ -75,18 +80,21 @@ export const useProductStore = defineStore("products", () => {
 
   async function updateProduct(id, productData) {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
+          },
+          body: JSON.stringify(productData),
         },
-        body: JSON.stringify(productData),
-      });
+      );
       if (!response.ok) throw new Error("Failed to update product");
-      
+
       const updatedProduct = await response.json();
-      
+
       // Local State Mutation: Find and Update
       // Using '==' to handle potential string/number mismatches from API/Route params
       const index = products.value.findIndex((p) => p.id == id);
@@ -104,18 +112,21 @@ export const useProductStore = defineStore("products", () => {
 
   async function deleteProduct(id) {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
-        method: "DELETE",
-        headers: {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products/${id}`,
+        {
+          method: "DELETE",
+          headers: {
             Authorization: `Bearer ${JSON.parse(localStorage.getItem("user"))?.token}`,
-        }
-      });
+          },
+        },
+      );
       if (!response.ok) throw new Error("Failed to delete product");
-      
+
       // Local State Mutation: Remove from array
       // This is more efficient than re-fetching the entire list
       products.value = products.value.filter((p) => p.id != id);
-      
+
       return true;
     } catch (e) {
       error.value = e.message;

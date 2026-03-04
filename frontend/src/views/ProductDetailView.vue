@@ -113,7 +113,7 @@ const handleMouseMove = (e) => {
   const { left, top, width, height } = e.target.getBoundingClientRect();
   const x = ((e.clientX - left) / width) * 100;
   const y = ((e.clientY - top) / height) * 100;
-  
+
   zoomStyle.value = {
     transformOrigin: `${x}% ${y}%`,
     transform: "scale(2)",

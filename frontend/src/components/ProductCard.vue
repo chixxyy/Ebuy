@@ -108,7 +108,6 @@ watch(
       </div>
       <!-- Edit/Delete Actions (Only for logged in users) -->
 
-
       <!-- Badge (Example) -->
       <div
         v-if="product.rating > 4.5"
