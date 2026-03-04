@@ -231,6 +231,10 @@ export const purchaseProduct = async (req: Request, res: Response) => {
           data: { stock: { decrement: qty } },
         });
 
+        if (updatedProduct.stock < 0) {
+          throw new Error("INSUFFICIENT_STOCK");
+        }
+
         return updatedProduct;
       },
       {

@@ -18,7 +18,7 @@ import { useContent } from "../composables/useContent";
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
-const { nav, locale } = useContent();
+const { nav, locale, setLocale } = useContent();
 
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
@@ -28,8 +28,8 @@ const handleScroll = () => {
 };
 
 const toggleLanguage = () => {
-  // Simple toggle between 'en' and 'zh-TW'
-  locale.value = locale.value === "zh-TW" ? "en" : "zh-TW";
+  const nextLocale = locale.value === "zh-TW" ? "en" : "zh-TW";
+  setLocale(nextLocale);
 };
 
 onMounted(() => {
