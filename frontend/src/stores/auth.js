@@ -44,15 +44,17 @@ export const useAuthStore = defineStore("auth", () => {
       );
 
       if (response.ok) {
-        // Auto login after register or just redirect to login?
-        // Implementation plan said "ensure registered users can log in".
-        // Let's just return true for now, usually backend returns userId.
-        return true;
+        return { success: true };
       }
-      return false;
+      
+      const errorData = await response.json();
+      if (response.status === 400 && errorData.message === "User already exists") {
+        return { success: false, reason: "email_exists" };
+      }
+      return { success: false, reason: "generic" };
     } catch (error) {
       console.error(error);
-      return false;
+      return { success: false, reason: "generic" };
     }
   }
 

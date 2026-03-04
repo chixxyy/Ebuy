@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
 import { useContent } from "../composables/useContent";
+import { Eye, EyeOff } from "lucide-vue-next";
 
 const email = ref("");
 const password = ref("");
@@ -10,6 +11,7 @@ const authStore = useAuthStore();
 const router = useRouter();
 const error = ref("");
 const { auth } = useContent();
+const showPassword = ref(false);
 
 const handleLogin = async () => {
   if (await authStore.login(email.value, password.value)) {
@@ -44,17 +46,25 @@ const handleLogin = async () => {
               :placeholder="auth.email"
             />
           </div>
-          <div>
+          <div class="relative">
             <label for="password" class="sr-only">{{ auth.password }}</label>
             <input
               id="password"
               v-model="password"
               name="password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               :placeholder="auth.password"
             />
+            <button
+              type="button"
+              @click="showPassword = !showPassword"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center z-20 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              <Eye v-if="!showPassword" class="h-5 w-5" aria-hidden="true" />
+              <EyeOff v-else class="h-5 w-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
 

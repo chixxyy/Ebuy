@@ -61,7 +61,7 @@ const canModifyProduct = computed(() => {
   return (
     authStore.user &&
     props.product.seller &&
-    authStore.user.id == props.product.seller.id
+    authStore.user.id === props.product.seller.id
   );
 });
 

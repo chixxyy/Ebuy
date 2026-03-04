@@ -13,13 +13,18 @@ const router = useRouter();
 const { auth, alert: alertContent } = useContent();
 
 const handleRegister = async () => {
-  if (await authStore.register(username.value, password.value, email.value)) {
+  const result = await authStore.register(username.value, password.value, email.value);
+  if (result.success) {
     showToast(alertContent.value.register_success);
     router.push("/login");
   } else {
+    const errorMsg = result.reason === "email_exists" 
+      ? alertContent.value.email_exists 
+      : alertContent.value.register_failed;
+
     showAlert(
       alertContent.value.error,
-      alertContent.value.register_failed,
+      errorMsg,
       "error",
       alertContent.value.confirm,
     );
