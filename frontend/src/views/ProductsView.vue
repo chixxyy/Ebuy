@@ -2,14 +2,40 @@
 import { useProductStore } from "../stores/products";
 import ProductCard from "../components/ProductCard.vue";
 import ProductSkeleton from "../components/ProductSkeleton.vue";
-import { Search, Filter, SlidersHorizontal } from "lucide-vue-next";
+import { Search, Filter, SlidersHorizontal, ChevronDown } from "lucide-vue-next";
+import { storeToRefs } from "pinia";
+import { ref, computed } from "vue";
 
 // import { useIntlayer } from 'vue-intlayer' // Removed
 // import dictionary from '../manual-dictionary.json' // Removed
 import { useContent } from "../composables/useContent";
 
 const productStore = useProductStore();
+const { products: storeProducts, isLoading } = storeToRefs(productStore);
 const { products } = useContent();
+
+const searchQuery = ref("");
+const selectedCategory = ref("All");
+const showCategoryDropdown = ref(false);
+
+const categories = computed(() => {
+  const cats = new Set(storeProducts.value.map((p) => p.category));
+  return ["All", ...Array.from(cats)];
+});
+
+const filteredProducts = computed(() => {
+  return storeProducts.value.filter((p) => {
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
+                          p.description.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const matchesCategory = selectedCategory.value === "All" || p.category === selectedCategory.value;
+    return matchesSearch && matchesCategory;
+  });
+});
+
+const selectCategory = (category) => {
+  selectedCategory.value = category;
+  showCategoryDropdown.value = false;
+};
 </script>
 
 <template>
@@ -32,17 +58,36 @@ const { products } = useContent();
               class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
             />
             <input
+              v-model="searchQuery"
               type="text"
               :placeholder="products.search"
               class="pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none w-full md:w-64 transition-all"
             />
           </div>
-          <button
-            class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-          >
-            <SlidersHorizontal class="w-5 h-5" />
-            <span class="hidden sm:inline">{{ products.filters }}</span>
-          </button>
+          <div class="relative">
+            <button
+              @click="showCategoryDropdown = !showCategoryDropdown"
+              class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition-colors"
+            >
+              <Filter class="w-5 h-5" />
+              <span class="hidden sm:inline">{{ selectedCategory === 'All' ? products.filters : selectedCategory }}</span>
+              <ChevronDown class="w-4 h-4 ml-1" />
+            </button>
+            <div
+              v-if="showCategoryDropdown"
+              class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+            >
+              <button
+                v-for="category in categories"
+                :key="category"
+                @click="selectCategory(category)"
+                class="w-full text-left px-4 py-2 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                :class="{ 'text-indigo-600 bg-indigo-50 font-medium': selectedCategory === category }"
+              >
+                {{ category }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -51,14 +96,18 @@ const { products } = useContent();
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
       >
         <!-- Skeleton Loading -->
-        <template v-if="productStore.isLoading">
+        <template v-if="isLoading">
           <ProductSkeleton v-for="n in 8" :key="n" />
         </template>
 
         <!-- Actual Products -->
         <template v-else>
+          <div v-if="filteredProducts.length === 0" class="col-span-full py-20 text-center text-gray-500">
+            No products found matching your criteria.
+          </div>
           <ProductCard
-            v-for="product in productStore.products"
+            v-else
+            v-for="product in filteredProducts"
             :key="product.id"
             :product="product"
           />

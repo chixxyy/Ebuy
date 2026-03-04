@@ -14,11 +14,13 @@ import {
 import { useContent } from "../composables/useContent";
 import ProductCard from "../components/ProductCard.vue";
 import { useProductStore } from "../stores/products";
+import { storeToRefs } from "pinia";
 
 const { home, items } = useContent();
 const productStore = useProductStore();
+const { products: storeProducts } = storeToRefs(productStore);
 
-const featuredProducts = computed(() => productStore.products.slice(0, 4));
+const featuredProducts = computed(() => storeProducts.value.slice(0, 4));
 </script>
 
 <template>

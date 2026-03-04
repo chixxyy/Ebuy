@@ -99,6 +99,29 @@ const deleteComment = async (commentId) => {
   }
 };
 
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const deleteProduct = async () => {
+  const result = await showConfirm(
+    alert.value.warning,
+    alert.value.delete_confirm,
+    alert.value.yes,
+    alert.value.no,
+  );
+
+  if (result.isConfirmed) {
+    if (await productStore.deleteProduct(product.value.id)) {
+      showToast(alert.value.delete_success);
+      router.push("/products");
+    }
+  }
+};
+
+const isOwner = computed(() => {
+  return authStore.user && product.value && product.value.seller && authStore.user.id === product.value.seller.id;
+});
+
 onMounted(() => {
   fetchProduct();
 });
@@ -163,9 +186,29 @@ const handleMouseLeave = () => {
               }}</span>
             </div>
 
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">
-              {{ product.name }}
-            </h1>
+            <div class="flex items-center justify-between mb-4">
+              <h1 class="text-4xl font-bold text-gray-900">
+                {{ product.name }}
+              </h1>
+              <div v-if="isOwner" class="flex gap-2">
+                <button
+                  @click="$router.push(`/edit-product/${product.id}`)"
+                  class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors"
+                  :title="products.edit"
+                  type="button"
+                >
+                  <Edit2 class="w-5 h-5" />
+                </button>
+                <button
+                  @click="deleteProduct"
+                  class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                  :title="products.delete"
+                  type="button"
+                >
+                  <Trash2 class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
 
             <div class="flex items-center gap-2 mb-6">
               <Star class="w-5 h-5 text-yellow-400 fill-current" />

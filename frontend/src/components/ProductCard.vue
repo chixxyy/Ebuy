@@ -27,15 +27,17 @@ const addToCart = () => {
 
 const handleDelete = async () => {
   const result = await showConfirm(
-    alert.warning,
-    alert.delete_confirm,
-    alert.yes,
-    alert.no,
+    alert.value.warning,
+    alert.value.delete_confirm,
+    alert.value.yes,
+    alert.value.no,
   );
 
   if (result.isConfirmed) {
-    await productStore.deleteProduct(props.product.id);
-    showToast(alert.delete_success);
+    const success = await productStore.deleteProduct(props.product.id);
+    if(success) {
+      showToast(alert.value.delete_success);
+    }
   }
 };
 

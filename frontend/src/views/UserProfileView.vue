@@ -26,6 +26,14 @@ const isCurrentUser = computed(() => {
   return authStore.user && user.value && authStore.user.id == user.value.id;
 });
 
+const userProducts = computed(() => {
+  if (!user.value || !user.value.products) return [];
+  // Since user.value.products is a static array from API, we can cross-reference
+  // it with productStore.products which is reactive to local deletions.
+  const allProductIdsIds = new Set(productStore.products.map(p => p.id));
+  return user.value.products.filter(p => allProductIdsIds.has(p.id));
+});
+
 import { onBeforeRouteUpdate } from "vue-router";
 
 const fetchUserProfile = async (userId) => {
@@ -215,11 +223,11 @@ onMounted(() => {
       </h2>
 
       <div
-        v-if="user.products.length > 0"
+        v-if="userProducts.length > 0"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
       >
         <ProductCard
-          v-for="product in user.products"
+          v-for="product in userProducts"
           :key="product.id"
           :product="product"
         />
