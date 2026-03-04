@@ -1,72 +1,49 @@
 # E-Buy 電商平台
 
-## 🛠 技術棧
-
-- **Frontend**: Vue 3, Vite, Tailwind CSS, Pinia, Vue I18n
-- **Backend**: Express, TypeScript, Prisma, SQLite
-
-## 🚀 快速開始
-
-### 後端 (Backend)
-
-```bash
-cd backend
-npm install
-
-# 資料庫遷移與種子資料
-npx prisma migrate dev
-npx ts-node prisma/seed.ts
-
-# 啟動伺服器 (Port 3000)
-npm run dev
-```
+## 可用指令 (Available Scripts)
 
 ### 前端 (Frontend)
 
+請先確保位於前端目錄：`cd frontend`
+
+| 指令                     | 說明                       |
+| ------------------------ | -------------------------- |
+| `npm install`            | 安裝專案相依套件           |
+| `npm run dev`            | 啟動開發環境伺服器         |
+| `npm run build`          | 打包正式環境程式碼         |
+| `npm run preview`        | 預覽打包後的專案           |
+| `npx prettier --write .` | 格式化程式碼               |
+| `npx cypress run`        | 執行 E2E 測試 (無 UI 模式) |
+| `npx cypress open`       | 開啟 Cypress 測試互動介面  |
+
+### 後端 (Backend)
+
+請先確保位於後端目錄：`cd backend`
+
+| 指令                         | 說明                                          |
+| ---------------------------- | --------------------------------------------- |
+| `npm install`                | 安裝專案相依套件 (會自動執行 Prisma generate) |
+| `npm run dev`                | 啟動開發環境伺服器 (Port 3000)                |
+| `npm run build`              | 編譯 TypeScript 與產生 Prisma Client          |
+| `npm start`                  | 啟動正式環境伺服器 (`dist/server.js`)         |
+| `npx prisma migrate dev`     | 執行資料庫遷移                                |
+| `npx ts-node prisma/seed.ts` | 寫入初始種子資料                              |
+| `npx prisma studio`          | 開啟本地資料庫圖形化管理介面                  |
+| `npx vitest run`             | 執行後端業務邏輯測試                          |
+| `npx prettier --write .`     | 格式化程式碼                                  |
+
+## 🚀 快速開發環境建置
+
 ```bash
+# 1. 建置並啟動後端
+cd backend
+npm install
+npx prisma migrate dev
+npx ts-node prisma/seed.ts
+npm run dev
+
+# 2. 啟動前端 (請開新的終端機視窗)
 cd frontend
 npm install
-
-# 啟動開發伺服器
 npm run dev
-```
-
-## 🧪 測試 (Testing)
-
-### 前端 E2E 測試 (Cypress)
-
-確保前端開發伺服器正在運行 (`npm run dev`)，然後執行：
-
-```bash
-cd frontend
-
-# 執行headless測試（不開啟視窗）
-npx cypress run
-
-# 開啟Cypress互動式介面
-npx cypress open
-```
-
-### 後端 API 測試 (Vitest)
-
-後端測試包含商品購買與庫存扣除的邏輯測試。
-
-```bash
-cd backend
-
-# 執行測試
-npx vitest run
-```
-
-```bash
-npx prisma studio
-```
-
-## 🧹 程式碼整理 (Linting & Formatting)
-
-本專案使用 Prettier 進行程式碼格式化。
-
-```bash
-cd frontend && npx prettier --write .
-cd backend && npx prettier --write .
 ```
