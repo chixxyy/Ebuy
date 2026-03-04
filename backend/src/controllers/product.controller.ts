@@ -90,7 +90,7 @@ export const updateProduct = async (req: Request, res: Response) => {
           },
         },
         _count: {
-            select: { comments: true },
+          select: { comments: true },
         },
       },
     });

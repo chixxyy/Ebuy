@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 import { io as Client } from "socket.io-client";
 import jwt from "jsonwebtoken";
@@ -29,17 +28,19 @@ async function main() {
 
   const product = await prisma.product.create({
     data: {
-        name: `Test Product ${Date.now()}`,
-        description: "Test Desc",
-        price: 100,
-        image: "https://via.placeholder.com/150",
-        category: "Test",
-        stock: 10, // Initial Stock 10
-        sellerId: user.id
-    }
+      name: `Test Product ${Date.now()}`,
+      description: "Test Desc",
+      price: 100,
+      image: "https://via.placeholder.com/150",
+      category: "Test",
+      stock: 10, // Initial Stock 10
+      sellerId: user.id,
+    },
   });
 
-  const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
+    expiresIn: "1h",
+  });
   console.log(`   User created: ${user.id}`);
   console.log(`   Product created: ${product.id} (Stock: ${product.stock})`);
 
@@ -47,34 +48,34 @@ async function main() {
   // Let's use API to be sure, or just DB. API is safer flow.
   // Actually, let's use DB for cart setup to focus on Checkout flow.
   const cart = await prisma.cart.create({
-      data: { userId: user.id }
+    data: { userId: user.id },
   });
   await prisma.cartItem.create({
-      data: {
-          cartId: cart.id,
-          productId: product.id,
-          quantity: 1
-      }
+    data: {
+      cartId: cart.id,
+      productId: product.id,
+      quantity: 1,
+    },
   });
   console.log("   Item added to cart (Quantity: 1)");
 
   // 3. Setup Socket Listener
   console.log("2. Connecting Socket...");
   const socket = Client("http://localhost:3000");
-  
+
   let socketReceived = false;
   let receivedStock = -1;
 
   socket.on("connect", () => {
-      console.log("   Socket connected:", socket.id);
+    console.log("   Socket connected:", socket.id);
   });
 
   socket.on("INVENTORY_UPDATE", (data: any) => {
-      console.log("   📩 RECEIVED EVENT [INVENTORY_UPDATE]:", data);
-      if (data.productId === product.id.toString()) {
-          socketReceived = true;
-          receivedStock = data.stock;
-      }
+    console.log("   📩 RECEIVED EVENT [INVENTORY_UPDATE]:", data);
+    if (data.productId === product.id.toString()) {
+      socketReceived = true;
+      receivedStock = data.stock;
+    }
   });
 
   // Give socket time to connect
@@ -83,19 +84,19 @@ async function main() {
   // 4. Action: Call Checkout API
   console.log("3. Calling Checkout API...");
   const response = await fetch(`${API_URL}/payment/checkout`, {
-      method: 'POST',
-      headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-      }
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
 
   const result = await response.json();
   console.log("   API Response:", response.status, result);
 
   if (!response.ok) {
-      console.error("❌ Checkout API Failed");
-      process.exit(1);
+    console.error("❌ Checkout API Failed");
+    process.exit(1);
   }
 
   // Wait for socket event
@@ -104,13 +105,15 @@ async function main() {
 
   // 5. Verification
   console.log("5. Verifying results...");
-  
+
   // Verify DB
-  const updatedProduct = await prisma.product.findUnique({ where: { id: product.id } });
-  
+  const updatedProduct = await prisma.product.findUnique({
+    where: { id: product.id },
+  });
+
   if (!updatedProduct) {
-      console.error("❌ Product disappeared from DB!");
-      process.exit(1);
+    console.error("❌ Product disappeared from DB!");
+    process.exit(1);
   }
 
   console.log(`   DB Stock: ${updatedProduct.stock} (Expected: 9)`);
@@ -119,18 +122,22 @@ async function main() {
 
   // Expectation 1: DB Stock = 9
   if (updatedProduct.stock === 9) {
-      console.log("   ✅ Expectation 1 (DB Stock) Passed");
+    console.log("   ✅ Expectation 1 (DB Stock) Passed");
   } else {
-      console.error("   ❌ Expectation 1 Failed: Stock is " + updatedProduct.stock);
-      pass = false;
+    console.error(
+      "   ❌ Expectation 1 Failed: Stock is " + updatedProduct.stock,
+    );
+    pass = false;
   }
 
   // Expectation 2: Socket Event
   if (socketReceived && receivedStock === 9) {
-      console.log("   ✅ Expectation 2 (Socket Broadcast) Passed");
+    console.log("   ✅ Expectation 2 (Socket Broadcast) Passed");
   } else {
-      console.error(`   ❌ Expectation 2 Failed: Event received? ${socketReceived}, Stock in event: ${receivedStock}`);
-      pass = false;
+    console.error(
+      `   ❌ Expectation 2 Failed: Event received? ${socketReceived}, Stock in event: ${receivedStock}`,
+    );
+    pass = false;
   }
 
   // Cleanup
@@ -141,12 +148,12 @@ async function main() {
   await prisma.product.delete({ where: { id: product.id } });
   await prisma.user.delete({ where: { id: user.id } }); // Delete creates cascading delete issues usually, but here minimal relations.
   // Actually product has comments relation to user? No comments made.
-  
+
   if (pass) {
-      console.log("\n🎉 TEST SUITE PASSED!");
+    console.log("\n🎉 TEST SUITE PASSED!");
   } else {
-      console.error("\n💀 TEST SUITE FAILED!");
-      process.exit(1);
+    console.error("\n💀 TEST SUITE FAILED!");
+    process.exit(1);
   }
 }
 

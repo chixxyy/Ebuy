@@ -18,7 +18,10 @@ export const addToCartDebounced = async (
   quantity: number,
 ) => {
   // Direct DB write to safely prevent any in-memory mix-ups
-  const result = await processCartUpdates(userId, new Map([[productId, quantity]]));
+  const result = await processCartUpdates(
+    userId,
+    new Map([[productId, quantity]]),
+  );
   return { status: "success", message: "Item added to cart", result };
 };
 
@@ -55,7 +58,7 @@ const processCartUpdates = async (
       // NOTE: Traditional e-commerce does NOT decrement stock on 'Add to Cart'.
       // Stock is only decremented on 'Purchase/Checkout'.
       // We only CHECK if there is enough stock here to prevent adding obviously OOS items.
-      
+
       // Update Cart Item
       const existingItem = await tx.cartItem.findFirst({
         where: { cartId: cart.id, productId },
@@ -64,7 +67,7 @@ const processCartUpdates = async (
       if (existingItem) {
         // Optional: Check if (existingItem.quantity + quantity) > product.stock
         // But stock varies, so maybe just let it be for now and strict check at checkout.
-        
+
         await tx.cartItem.update({
           where: { id: existingItem.id },
           data: { quantity: { increment: quantity } },
@@ -88,7 +91,7 @@ export const getCart = async (userId: number) => {
     include: {
       items: {
         include: { product: true },
-        orderBy: { productId: 'asc' }
+        orderBy: { productId: "asc" },
       },
     },
   });
@@ -109,7 +112,7 @@ export const removeFromCart = async (userId: number, productId: number) => {
 export const updateCartQuantity = async (
   userId: number,
   productId: number,
-  quantity: number
+  quantity: number,
 ) => {
   const cart = await prisma.cart.findUnique({ where: { userId } });
   if (!cart) return;

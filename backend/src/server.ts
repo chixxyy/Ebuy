@@ -80,7 +80,7 @@ app.get("/", (req, res) => {
         <div class="card">
             <h1><span class="status-dot"></span>System Operational</h1>
             <p>Ebuy Backend is running smoothly.</p>
-            <p style="font-size: 0.875rem; color: #9ca3af;">Env: ${process.env.NODE_ENV || 'development'} | Time: ${new Date().toISOString()}</p>
+            <p style="font-size: 0.875rem; color: #9ca3af;">Env: ${process.env.NODE_ENV || "development"} | Time: ${new Date().toISOString()}</p>
         </div>
     </body>
     </html>

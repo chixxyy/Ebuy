@@ -52,7 +52,11 @@ export const updateCartQuantity = async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const { productId, quantity } = req.body;
 
-    await CartService.updateCartQuantity(userId, parseInt(productId), parseInt(quantity));
+    await CartService.updateCartQuantity(
+      userId,
+      parseInt(productId),
+      parseInt(quantity),
+    );
     res.json({ message: "Cart updated" });
   } catch (error) {
     res.status(500).json({ message: "Error updating cart", error });
